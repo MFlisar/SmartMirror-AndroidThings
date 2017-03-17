@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         TextView data = (TextView)findViewById(R.id.date);
         TextView time = (TextView)findViewById(R.id.time);
 
-
+        // TEST FOR GIT
         Calendar c = Calendar.getInstance(Locale.ITALY);
         data.setText(c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR));
         time.setText((c.get(Calendar.HOUR)+1)+" : "+c.get(Calendar.MINUTE));
