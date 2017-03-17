@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SmartMirror</string>
+
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="ora_fitizia">20.22</string>
+    <string name="data_fitizia">15/03/2017</string>
+    <string name="temperatura_fitizia">17^</string>
+</resources>
