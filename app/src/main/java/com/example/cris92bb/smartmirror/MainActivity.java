@@ -2,6 +2,9 @@ package com.example.cris92bb.smartmirror;
 
 import android.annotation.SuppressLint;
 import android.icu.util.Calendar;
+import android.os.CountDownTimer;
+import android.os.Looper;
+import android.os.Message;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,12 +14,17 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
  * status bar and navigation/system bar) with user interaction.
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     /**
      * Whether or not the system UI should be auto-hidden after
      * {@link #AUTO_HIDE_DELAY_MILLIS} milliseconds.
@@ -38,7 +46,9 @@ public class MainActivity extends AppCompatActivity {
     private View mContentView;
     //private View mControlsView;
     private boolean mVisible;
-
+    private TextView data, time;
+    private Calendar c;
+    Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,15 +71,16 @@ public class MainActivity extends AppCompatActivity {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        TextView data = (TextView)findViewById(R.id.date);
-        TextView time = (TextView)findViewById(R.id.time);
+        data = (TextView)findViewById(R.id.date);
+        time = (TextView)findViewById(R.id.time);
 
         // TEST FOR GIT
-        Calendar c = Calendar.getInstance(Locale.ITALY);
+        /*
+        c = Calendar.getInstance(Locale.ITALY);
+
         data.setText(c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR));
         time.setText((c.get(Calendar.HOUR)+1)+" : "+c.get(Calendar.MINUTE));
-
-
+        */
     }
 
     @Override
@@ -80,8 +91,24 @@ public class MainActivity extends AppCompatActivity {
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(100);
-    }
 
+        final CountDownTimer timer = new CountDownTimer(6000, 500) {
+
+            public void onTick(long millisUntilFinished) {
+                //mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                // Do your stuff here.
+                updateTimeHour.run();
+            }
+
+            public void onFinish() {
+                if(stop){}
+                    else this.start();
+            }
+        };
+
+        timer.start();
+
+    }
     /**
      * Touch listener to use for in-layout UI controls to delay hiding the
      * system UI. This is to prevent the jarring behavior of controls going away
@@ -177,4 +204,26 @@ public class MainActivity extends AppCompatActivity {
         mHideHandler.removeCallbacks(mHideRunnable);
         mHideHandler.postDelayed(mHideRunnable, delayMillis);
     }
+    private final Runnable updateTimeHour = new Runnable() {
+        @Override
+        public void run() {
+            data = (TextView)findViewById(R.id.date);
+            time = (TextView)findViewById(R.id.time);
+
+            // TEST FOR GIT
+            Calendar c = Calendar.getInstance(Locale.ITALY);
+            data.setText(c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR));
+            time.setText((c.get(Calendar.HOUR)+1)+" : "+c.get(Calendar.MINUTE)+" : "+c.get(Calendar.SECOND));
+        }
+    };
+
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        stop=true;
+    }
+    private boolean stop=false;
+    private int debug;
+
 }
