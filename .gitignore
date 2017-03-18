@@ -45,3 +45,15 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+_windows
+inspection
+IntelliLang.xml
+colors.scheme.xml
+debugger.xml
+diff.xml
+editor.codeinsight.xml
+gradle.run.settings.xml
+web-browsers.xml
+local.properties
+ignore.xml
