@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.cris92bb.smartmirror" >
+    package="com.example.cris92bb.smartmirror">
 
     <application
         android:allowBackup="true"
@@ -8,24 +8,38 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme" >
-        <uses-library android:name="com.google.android.things" android:required="false" />
+        android:theme="@style/AppTheme">
+        <uses-library
+            android:name="com.google.android.things"
+            android:required="false" />
+
         <activity
             android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme" >
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <!-- Launch as default launcher -->
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.IOT_LAUNCHER"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.IOT_LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Memo"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_memo"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/memoTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.cris92bb.smartmirror.MainActivity" />
         </activity>
     </application>
 

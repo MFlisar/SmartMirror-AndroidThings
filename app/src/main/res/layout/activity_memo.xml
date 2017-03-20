@@ -1,0 +1,33 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/memoTheme"
+    tools:context="com.example.cris92bb.smartmirror.Memo">
+
+    <!-- The primary full-screen view. This can be replaced with whatever view
+         is needed to present your content, e.g. VideoView, SurfaceView,
+         TextureView, etc. -->
+
+    <!-- This FrameLayout insets its children based on system windows using
+         android:fitsSystemWindows. -->
+
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/calendarView"
+        style="@style/calendarStyleMirror"
+        android:layout_width="338dp"
+        android:layout_height="339dp"
+        android:layout_gravity="top|center"
+        android:theme="@style/memoTheme"
+        app:mcv_calendarMode="month"
+        app:mcv_showOtherDates="defaults" />
+
+    <!--<CalendarView
+        android:id="@+id/calendarView"
+        style="@style/calendarStyleMirror"
+        android:layout_width="289dp"
+        android:layout_height="306dp"
+        android:layout_gravity="top|center"
+        android:theme="@style/calendarStyleMirror"/>-->
+</FrameLayout>

@@ -6,4 +6,6 @@
     <string name="ora_fitizia">20.22</string>
     <string name="data_fitizia">15/03/2017</string>
     <string name="temperatura_fitizia">17^</string>
+
+    <string name="title_activity_memo">Memo</string>
 </resources>

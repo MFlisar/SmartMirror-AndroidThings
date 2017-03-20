@@ -20,12 +20,13 @@ android {
 }
 
 dependencies {
-    provided 'com.google.android.things:androidthings:0.1-devpreview'
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile 'com.android.support:appcompat-v7:25.2.0'
     compile 'com.android.support:support-v4:25.2.0'
+    compile 'com.prolificinteractive:material-calendarview:1.4.3'
     testCompile 'junit:junit:4.12'
+    provided 'com.google.android.things:androidthings:0.1-devpreview'
 }
