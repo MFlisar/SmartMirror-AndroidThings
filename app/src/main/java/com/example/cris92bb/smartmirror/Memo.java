@@ -5,10 +5,22 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.felipecsl.asymmetricgridview.library.Utils;
+import com.felipecsl.asymmetricgridview.library.model.AsymmetricItem;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
+import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -51,7 +63,6 @@ public class Memo extends AppCompatActivity {
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         }
     };
-    private View mControlsView;
     private final Runnable mShowPart2Runnable = new Runnable() {
         @Override
         public void run() {
@@ -60,7 +71,6 @@ public class Memo extends AppCompatActivity {
             if (actionBar != null) {
                 actionBar.show();
             }
-            mControlsView.setVisibility(View.VISIBLE);
         }
     };
     private boolean mVisible;
@@ -85,6 +95,8 @@ public class Memo extends AppCompatActivity {
         }
     };
 
+    private notesListAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,22 +108,28 @@ public class Memo extends AppCompatActivity {
         }
 
         mVisible = true;
-        mControlsView = findViewById(R.id.fullscreen_content_controls);
         mContentView = findViewById(R.id.fullscreen_content);
 
+        AsymmetricGridView listView = (AsymmetricGridView) findViewById(R.id.noteList);
 
-        // Set up the user interaction to manually show or hide the system UI.
-        mContentView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                toggle();
-            }
-        });
+	    Log.v("MEMO","Lista");
 
-        // Upon interacting with UI controls, delay any scheduled hide()
-        // operations to prevent the jarring behavior of controls going away
-        // while interacting with the UI.
-        findViewById(R.id.dummy_button).setOnTouchListener(mDelayHideTouchListener);
+        // Choose your own preferred column width
+        listView.setRequestedColumnWidth(Utils.dpToPx(this.getApplicationContext(), 120));
+        final ArrayList<Nota> items = new ArrayList<>();
+
+	    Nota nota0 = new Nota("Data", "Titolo", "Descrizione che dovrebbe essere abbastanza lunga cosi' provo a vedere quanto e' possibile dilungarsi nelle descrizionio con questo metodo di sistemare i tiles, probabilmente non e' ancora abbastanza ma ci provo comunque, al massimo aggiungo qualche parola a caso dopo",0);
+	    Nota nota1 = new Nota("Data", "Titolo", "Descrizione che dovrebbe essere abbastanza lunga cosi' provo a vedere quanto e' possibile dilungarsi nelle descrizionio con questo metodo di sistemare i tiles, probabilmente non e' ancora abbastanza ma ci provo comunque, al massimo aggiungo qualche parola a caso dopo",1);
+	    Nota nota2 = new Nota("Data", "Titolo", "Descrizione che dovrebbe essere abbastanza lunga cosi' provo a vedere quanto e' possibile dilungarsi nelle descrizionio con questo metodo di sistemare i tiles, probabilmente non e' ancora abbastanza ma ci provo comunque, al massimo aggiungo qualche parola a caso dopo",2);
+	    items.add(nota0);
+	    items.add(nota1);
+	    items.add(nota2);
+
+        adapter = new notesListAdapter(this.getApplicationContext(), items);
+        AsymmetricGridViewAdapter asymmetricAdapter = new AsymmetricGridViewAdapter<>(this, listView, adapter);
+        listView.setAdapter(asymmetricAdapter);
+	    listView.setAllowReordering(true);
+
     }
 
     @Override
@@ -121,7 +139,7 @@ public class Memo extends AppCompatActivity {
         // Trigger the initial hide() shortly after the activity has been
         // created, to briefly hint to the user that UI controls
         // are available.
-        delayedHide(100);
+        delayedHide(1000);
     }
 
     @Override
@@ -149,7 +167,6 @@ public class Memo extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.hide();
         }
-        mControlsView.setVisibility(View.GONE);
         mVisible = false;
 
         // Schedule a runnable to remove the status and navigation bar after a delay

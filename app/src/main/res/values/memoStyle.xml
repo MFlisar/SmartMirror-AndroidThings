@@ -5,6 +5,7 @@
         <item name="mcv_dateTextAppearance">@style/calendarTextMirror</item>
         <item name="mcv_headerTextAppearance">@style/calendarTextMirror</item>
         <item name="mcv_weekDayTextAppearance">@style/calendarTextMirror</item>
+        <item name="mcv_selectionColor">#00b30c</item>
     </style>
 
     <style name="memoTheme" parent="Theme.AppCompat.Light.DarkActionBar">
