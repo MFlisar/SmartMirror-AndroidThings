@@ -2,23 +2,18 @@ package com.example.cris92bb.smartmirror;
 
 import android.annotation.SuppressLint;
 import android.icu.util.Calendar;
+import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Looper;
-import android.os.Message;
+import android.os.Handler;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
 import java.util.Locale;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -46,8 +41,9 @@ public class MainActivity extends AppCompatActivity{
     private View mContentView;
     //private View mControlsView;
     private boolean mVisible;
-    private TextView data, time;
+    private TextView data, time,weather;
     private Calendar c;
+    //private GoogleApiClient gAc;
     Timer timer;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +67,10 @@ public class MainActivity extends AppCompatActivity{
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        data = (TextView)findViewById(R.id.date);
-        time = (TextView)findViewById(R.id.time);
 
+        data    = (TextView)findViewById(R.id.date);
+        time    = (TextView)findViewById(R.id.time);
+        weather = (TextView)findViewById(R.id.temperatura);
         // TEST FOR GIT
         /*
         c = Calendar.getInstance(Locale.ITALY);
@@ -83,6 +80,8 @@ public class MainActivity extends AppCompatActivity{
         */
     }
 
+
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -91,7 +90,6 @@ public class MainActivity extends AppCompatActivity{
         // created, to briefly hint to the user that UI controls
         // are available.
         delayedHide(100);
-
         final CountDownTimer timer = new CountDownTimer(6000, 500) {
 
             public void onTick(long millisUntilFinished) {
@@ -207,13 +205,14 @@ public class MainActivity extends AppCompatActivity{
     private final Runnable updateTimeHour = new Runnable() {
         @Override
         public void run() {
-            data = (TextView)findViewById(R.id.date);
-            time = (TextView)findViewById(R.id.time);
-
-            // TEST FOR GIT
             Calendar c = Calendar.getInstance(Locale.ITALY);
-            data.setText(c.get(Calendar.DAY_OF_MONTH)+"/"+(c.get(Calendar.MONTH)+1)+"/"+c.get(Calendar.YEAR));
-            time.setText((c.get(Calendar.HOUR)+1)+" : "+c.get(Calendar.MINUTE)+" : "+c.get(Calendar.SECOND));
+            data.setText(String.format("%02d",c.get(Calendar.DAY_OF_MONTH))+"/"+String.format("%02d",(c.get(Calendar.MONTH)+1))+"/"+c.get(Calendar.YEAR));
+            int hour    = c.get(Calendar.HOUR);
+            int minutes = c.get(Calendar.MINUTE);
+            int seconds = c.get(Calendar.SECOND);
+            StringBuilder sb = new StringBuilder();
+            sb.append(String.format("%02d", hour)).append(":").append(String.format("%02d",minutes)).append(":").append(String.format("%02d",seconds));
+            time.setText(sb);
         }
     };
 
@@ -227,3 +226,4 @@ public class MainActivity extends AppCompatActivity{
     private int debug;
 
 }
+
