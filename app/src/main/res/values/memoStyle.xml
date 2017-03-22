@@ -2,10 +2,10 @@
 <resources>
 
     <style name="calendarStyleMirror">
-        <item name="mcv_dateTextAppearance">@style/calendarTextMirror</item>
-        <item name="mcv_headerTextAppearance">@style/calendarTextMirror</item>
-        <item name="mcv_weekDayTextAppearance">@style/calendarTextMirror</item>
-        <item name="mcv_selectionColor">#00b30c</item>
+    </style>
+
+    <style name="notesStyle">
+        <item name="android:textAppearance">@style/textMirror</item>
     </style>
 
     <style name="memoTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -14,7 +14,7 @@
         <item name="colorPrimaryDark">#000000</item>
         <item name="colorAccent">#ffffff</item>
         <item name="android:background">#000000</item>
-        <item name="android:textAppearance">@style/calendarTextMirror</item>
+        <item name="android:textAppearance">@style/textMirror</item>
     </style>
 
     <style name="testTheme" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -24,11 +24,19 @@
         <item name="colorAccent">#00fbff</item>
         <item name="android:background">#00ff04</item>
         <item name="android:textColor">#FFF</item>
-        <item name="android:textAppearance">@style/calendarTextMirror</item>
+        <item name="android:textAppearance">@style/textMirror</item>
     </style>
 
-    <style name="calendarTextMirror">
+    <style name="textMirror">
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">#FFF</item>
     </style>
+
+    <style name="textMirror.Title">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <color name="notesColor">#424242</color>
 </resources>

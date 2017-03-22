@@ -13,13 +13,11 @@ import com.felipecsl.asymmetricgridview.library.model.AsymmetricItem;
 public class Nota implements AsymmetricItem {
 
 	private String date, title, description;
-	private int n;
 
-	public Nota(String date, String title, String description,int n){
+	public Nota(String date, String title, String description){
 		this.date = date;
 		this.title = title;
 		this.description = description;
-		this.n = n;
 	}
 
 	public void setDate(String date) {
@@ -53,17 +51,11 @@ public class Nota implements AsymmetricItem {
 
 	@Override
 	public int getColumnSpan() {
-		if(n==0){
-			return 2;
-		}
 		return 1;
 	}
 
 	@Override
 	public int getRowSpan() {
-		if(n==0){
-			return 2;
-		}
 		return 1;
 	}
 

@@ -10,8 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/calendarView"
+        <!--<com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
             style="@style/calendarStyleMirror"
             android:layout_width="282dp"
             android:layout_height="267dp"
@@ -20,18 +19,47 @@
             android:layout_gravity="top|center"
             android:theme="@style/memoTheme"
             app:mcv_calendarMode="month"
-            app:mcv_showOtherDates="defaults" />
+            app:mcv_showOtherDates="defaults" />-->
+
+        <TextView
+            android:id="@+id/text_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:textAlignment="center"
+            android:textAppearance="@style/textMirror"/>
+
+        <com.github.sundeepk.compactcalendarview.CompactCalendarView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            style="@style/calendarStyleMirror"
+            android:id="@+id/calendarView"
+            android:layout_below="@+id/text_month"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_width="250dp"
+            android:layout_height="210dp"
+            app:compactCalendarTargetHeight="210dp"
+            app:compactCalendarTextSize="12sp"
+            app:compactCalendarBackgroundColor="#000000"
+            app:compactCalendarTextColor="#fff"
+            app:compactCalendarCurrentSelectedDayBackgroundColor="#2e7d32"
+            app:compactCalendarCurrentDayBackgroundColor="#B71C1C"
+            app:compactCalendarMultiEventIndicatorColor="#fff"
+            />
 
         <com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/noteList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/calendarView"
+            android:cacheColorHint="@android:color/black"
             android:divider="@android:color/black"
-            android:dividerHeight="0dp"
-            android:footerDividersEnabled="true"
-            android:headerDividersEnabled="true" />
+            android:dividerHeight="3dp"
+            android:footerDividersEnabled="false"
+            android:headerDividersEnabled="false"/>
     </RelativeLayout>
+
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
          TextureView, etc. -->

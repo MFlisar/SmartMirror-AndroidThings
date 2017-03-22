@@ -1,6 +1,7 @@
 package com.example.cris92bb.smartmirror;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,15 +13,25 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.felipecsl.asymmetricgridview.library.Utils;
 import com.felipecsl.asymmetricgridview.library.model.AsymmetricItem;
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridView;
 import com.felipecsl.asymmetricgridview.library.widget.AsymmetricGridViewAdapter;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+
+import static java.lang.System.in;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -96,6 +107,9 @@ public class Memo extends AppCompatActivity {
     };
 
     private notesListAdapter adapter;
+	AsymmetricGridViewAdapter asymmetricAdapter;
+	private TextView text_month;
+	private AsymmetricGridView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +123,9 @@ public class Memo extends AppCompatActivity {
 
         mVisible = true;
         mContentView = findViewById(R.id.fullscreen_content);
+	    text_month = (TextView)findViewById(R.id.text_month);
 
-        AsymmetricGridView listView = (AsymmetricGridView) findViewById(R.id.noteList);
+        listView = (AsymmetricGridView) findViewById(R.id.noteList);
 
 	    Log.v("MEMO","Lista");
 
@@ -118,18 +133,149 @@ public class Memo extends AppCompatActivity {
         listView.setRequestedColumnWidth(Utils.dpToPx(this.getApplicationContext(), 120));
         final ArrayList<Nota> items = new ArrayList<>();
 
-	    Nota nota0 = new Nota("Data", "Titolo", "Descrizione che dovrebbe essere abbastanza lunga cosi' provo a vedere quanto e' possibile dilungarsi nelle descrizionio con questo metodo di sistemare i tiles, probabilmente non e' ancora abbastanza ma ci provo comunque, al massimo aggiungo qualche parola a caso dopo",0);
-	    Nota nota1 = new Nota("Data", "Titolo", "Descrizione che dovrebbe essere abbastanza lunga cosi' provo a vedere quanto e' possibile dilungarsi nelle descrizionio con questo metodo di sistemare i tiles, probabilmente non e' ancora abbastanza ma ci provo comunque, al massimo aggiungo qualche parola a caso dopo",1);
-	    Nota nota2 = new Nota("Data", "Titolo", "Descrizione che dovrebbe essere abbastanza lunga cosi' provo a vedere quanto e' possibile dilungarsi nelle descrizionio con questo metodo di sistemare i tiles, probabilmente non e' ancora abbastanza ma ci provo comunque, al massimo aggiungo qualche parola a caso dopo",2);
-	    items.add(nota0);
-	    items.add(nota1);
-	    items.add(nota2);
-
         adapter = new notesListAdapter(this.getApplicationContext(), items);
-        AsymmetricGridViewAdapter asymmetricAdapter = new AsymmetricGridViewAdapter<>(this, listView, adapter);
+        asymmetricAdapter = new AsymmetricGridViewAdapter<>(this, listView, adapter);
         listView.setAdapter(asymmetricAdapter);
 	    listView.setAllowReordering(true);
 
+        final String TAG = "Memo";
+
+        final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView);
+        // Set first day of week to Monday, defaults to Monday so calling setFirstDayOfWeek is not necessary
+        // Use constants provided by Java Calendar class
+        compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
+
+        // Add event 1 on Sun, 07 Jun 2015 18:20:51 GMT
+        Event ev1 = new Event(Color.WHITE, 1433701251000L, "Some extra data that I want to store.");
+        compactCalendarView.addEvent(ev1);
+
+        // Added event 2 GMT: Sun, 07 Jun 2015 19:10:51 GMT
+        Event ev2 = new Event(Color.WHITE, 1433704251000L, "asdasdasda asdasdasd");
+        compactCalendarView.addEvent(ev2);
+
+	    Event ev3 = new Event(Color.WHITE, getDateForCalendar("23 03 2017 14:23:00"), "Appuntamento medico");
+	    compactCalendarView.addEvent(ev3);
+
+	    Event ev4 = new Event(Color.WHITE, getDateForCalendar("12 03 2017 14:00:00"), "Fare la spesa");
+	    compactCalendarView.addEvent(ev4);
+
+	    Event ev5 = new Event(Color.WHITE, getDateForCalendar("12 04 2017 14:00:00"), "prova2 la spesa");
+	    compactCalendarView.addEvent(ev5);
+
+	    Event ev6 = new Event(Color.WHITE, getDateForCalendar("19 04 2017 14:00:00"), "prova3 la spesa");
+	    compactCalendarView.addEvent(ev6);
+
+
+	    List<Event> monthEvents = compactCalendarView.getEventsForMonth(getMonthForEvents(compactCalendarView.getFirstDayOfCurrentMonth().getMonth(), compactCalendarView.getFirstDayOfCurrentMonth().getYear()));
+        for (Event event : monthEvents){
+			Nota n = new Nota(getDateStringFromMillisec(event.getTimeInMillis()),((String)event.getData()).split(" ")[0],(String)event.getData());
+	        items.add(n);
+	    }
+
+	    setMonthText(compactCalendarView.getFirstDayOfCurrentMonth());
+
+        compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                List<Event> events = compactCalendarView.getEvents(dateClicked);
+                Log.d(TAG, "Day was clicked: " + dateClicked + " with events " + events);
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+	            setMonthText(firstDayOfNewMonth);
+	            items.clear();
+				//asymmetricAdapter.notifyDataSetChanged();
+
+	            List<Event> monthEvents = compactCalendarView.getEventsForMonth(getMonthForEvents(firstDayOfNewMonth.getMonth(),firstDayOfNewMonth.getYear()));
+	            for (Event event : monthEvents){
+		            Nota n = new Nota(getDateStringFromMillisec(event.getTimeInMillis()),((String)event.getData()).split(" ")[0],(String)event.getData());
+		            items.add(n);
+	            }
+	            Log.v("MEMO", asymmetricAdapter.getCount()+" Count of adapter");
+
+	            asymmetricAdapter.notifyDataSetChanged();
+
+            }
+        });
+
+    }
+
+    private Date getMonthForEvents(int month, int year){//Formato data: MM yyyy
+	    /*Calendar c = Calendar.getInstance();
+	    int year = c.get(Calendar.YEAR);*/
+
+	    String strDate = "0"+(month+1)+" "+(1900+year);
+	    SimpleDateFormat sdf = new SimpleDateFormat("MM yyyy");
+	    Date mDate = null;
+	    try {
+		    mDate = sdf.parse(strDate);
+	    } catch (ParseException e) {
+		    e.printStackTrace();
+	    }
+
+	    return mDate;
+    }
+
+    private String getDateStringFromMillisec(long millisec){
+	    Date mDate = new Date(millisec);
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+	    return sdf.format(mDate);
+    }
+
+    private long getDateForCalendar(String date){//Formato data: dd MM yyyy HH:mm:ss
+		long timeInMilliseconds = 0;
+	    date = date+" GMT+01:00";
+	    SimpleDateFormat sdf = new SimpleDateFormat("dd MM yyyy HH:mm:ss z");
+	    try {
+		    Date mDate = sdf.parse(date);
+		    timeInMilliseconds = mDate.getTime();
+	    } catch (ParseException e) {
+		    e.printStackTrace();
+	    }
+
+	    return timeInMilliseconds;
+    }
+
+    private void setMonthText(Date data){
+	    switch(data.getMonth()){
+		    case 0:
+		    	text_month.setText("Gennaio "+(1900+data.getYear()));
+		    	break;
+		    case 1:
+			    text_month.setText("Febbraio "+(1900+data.getYear()));
+			    break;
+		    case 2:
+			    text_month.setText("Marzo "+(1900+data.getYear()));
+			    break;
+		    case 3:
+			    text_month.setText("Aprile "+(1900+data.getYear()));
+			    break;
+		    case 4:
+			    text_month.setText("Maggio "+(1900+data.getYear()));
+			    break;
+		    case 5:
+			    text_month.setText("Giugno "+(1900+data.getYear()));
+			    break;
+		    case 6:
+			    text_month.setText("Luglio "+(1900+data.getYear()));
+			    break;
+		    case 7:
+			    text_month.setText("Agosto "+(1900+data.getYear()));
+			    break;
+		    case 8:
+			    text_month.setText("Settembre "+(1900+data.getYear()));
+			    break;
+		    case 9:
+			    text_month.setText("Ottobre "+(1900+data.getYear()));
+			    break;
+		    case 10:
+			    text_month.setText("Novembre "+(1900+data.getYear()));
+			    break;
+		    case 11:
+			    text_month.setText("Dicembre "+(1900+data.getYear()));
+			    break;
+	    }
     }
 
     @Override
