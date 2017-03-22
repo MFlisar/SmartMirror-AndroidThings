@@ -193,9 +193,8 @@ public class Memo extends AppCompatActivity {
 		            items.add(n);
 	            }
 	            Log.v("MEMO", asymmetricAdapter.getCount()+" Count of adapter");
-
+	            listView.setAdapter(asymmetricAdapter);
 	            asymmetricAdapter.notifyDataSetChanged();
-
             }
         });
 
